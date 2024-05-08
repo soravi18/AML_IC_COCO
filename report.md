@@ -319,6 +319,13 @@ Attaching a sample Image below from the application:
 ![Alt Text](Images/Results_Section.jpg)
 
 
+### **BLEU Score**
+
+The BLEU (Bilingual Evaluation Understudy) score is a metric used to evaluate the quality of machine-generated text, such as translations or captions. It measures how closely the generated text matches human-written reference text, based on the overlap of n-grams (sequences of n words) between the two. A higher BLEU score indicates a closer resemblance between the generated and reference texts, suggesting better quality. The average BLEU score of **0.72** indicates that, on average, the generated captions closely match the reference captions by approximately **72%.**
+
+![Alt Text](Images/BLEU.jpg)
+
+
 ## **Discussion**
 
 We have done 4 models which has been explained above in the methods section. The first one is the CNN encoder like inception V3 for image encoding and the RNN decoder for the text decoding, we used a mid level batch and epoch size given the CPU/GPU constraint, was able to increase the accuracy and decrease both training and validation loss. Further we tweaked the hyper-parameters and have done the second modeling using the same CNN/RNN, here we tuned the learning rate, utilized the adam optimizer, and also increased the vocabulary size to frame for descriptive captions, it had a lesser loss from 2.61 to 2.31, and the captions were able to frame better sentences. 
