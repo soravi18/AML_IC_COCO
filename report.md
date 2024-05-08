@@ -144,6 +144,7 @@ The task is GPU bound, but everything we have done so far is using a high comput
 ![Alt Text](Images/cpu_idling.jpg)
 
 Explanation: Here our model works best with objects we trained it on, for example few animals, fruits, food categories..etc, here the below image has a caption quoting it as a clock tower instead of captioning it as a Eiffel tower, we trained a model how to identify an object as a clock/clock tower as its one of the object instance in coco2017 dataset. We wanted to use more object and stuff categories, but even here due to disk limitation and CPU idling out we had to train on less than half of the data.
+![Alt Text](Images/EiffelTower_ClockTower.jpg)
 
 
 #### **Addressing the Stakeholder Needs**
@@ -153,6 +154,8 @@ Our main primary stakeholders are the people with Visual Impairments, the web-ap
 People who reach a malignant stage of diabetic retinopathy lose more than half their sight and cannot distinguish objects properly. With this application, they don't need an additional person to visualize something.
 
 Our second stakeholders are the social media users, we have tested it with random images from the search engines, its able to caption those images, people can utilize these to explain an image they are posting in a generic way, for example, flower garden in middle of a city park, its one of the caption our web application generated when we tested out. It makes browsing engaging, with more classified training we could even utilize it to identify plant species to very specific bird names.
+![Alt Text](Images/Garden.jpg)
+
 
 Our third stakeholders are the teachers and educators, this could be next LCMS(Learning Content Management System) in schools, instead of pages of notes and efforts, they could support early literacy with advanced vocabulary from the captions generated, a child would be intrigued to see different grammatical way of explaining a picture, this would increase the language development at the earlier age. 
 
