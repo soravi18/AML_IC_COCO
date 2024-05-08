@@ -115,6 +115,8 @@ ImageNet is a very widely known dataset in computer vision research, acknowledge
 The running web application is built on BLIP: Bootstrapping Language Image Pre-training for image captioning, it gave high accuracy and lesser loss compared to the other three models, moreover it has a filter to remove noise from website data making it a better fit for the application.
 
 Attaching a sample Image below from the application: 
+![Alt Text](Images/Results_Section.jpg)
+
 
 ## **Discussion**
 
