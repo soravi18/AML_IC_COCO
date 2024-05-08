@@ -13,16 +13,15 @@ https://github.com/Rithika2000
 https://github.com/VishnuCharugundla
 
 
-### **Introduction**
+## **Introduction**
 
-The project aims to push image captioning technology beyond what currently exists. We will combine recent advances in image recognition and language modeling to generate novel descriptive captions that go beyond just naming objects and actions. The goal is a system that provides rich, detailed, and natural descriptions of photographs to make them more accessible and meaningful for all. Training on open and varied image datasets will be key to ensuring the system can generalize well and avoid bias. We will also prioritize evaluation methods that measure how well the captions describe the full context of images, not just presence of objects. There are still some challenges ahead, but by focusing on inclusivity and the uniqueness of this multi-modal approach, we hope to create something that moves image captioning technology forward in an impactful way.
+The project aims to push image captioning technology beyond what currently exists. We will combine recent advances in image recognition and language modeling to generate novel descriptive captions that go beyond just naming objects and actions. The goal is to create a system that provides rich, detailed, and natural descriptions of photographs to make them more accessible and meaningful for all. Training on open and varied image datasets will be key to ensuring the system can generalize well and avoid bias. We will also prioritize evaluation methods that measure how well the captions describe the full context of images, not just presence of objects. There are still some challenges ahead, but by focusing on inclusivity and the uniqueness of this multi-modal approach, we hope to create something that moves image captioning technology forward in an impactful way.
 
 The objective of *EqualEyes* is to be helpful for anyone who interacts with images and relies on captions to understand the content better. This includes individuals with visual impairments who use screen readers (especially the color blind people), people browsing social media platforms or news websites, researchers analyzing image datasets, and developers working on applications that involve image recognition and understanding. Ultimately, the goal is to make image captioning more inclusive and accessible for all users, regardless of their abilities or needs.
 
 The primary stakeholders for this project include individuals with visual impairments and educators. Successful implementation of the system will significantly improve accessibility for individuals using screen readers and provides valuable educational resources for teachers and educators.
 
 The working web application takes an image in any format as an input, processes it through our 4th model VisionEncoderDecoder Model, a descriptive caption is generated for that image, further it has an audio extension which helps Visually Impaired People to listen to the description of an image through medium of sound. For now we have established for the standard American english.
-
 
 #### **Outlining Stakeholders**
 
@@ -128,7 +127,7 @@ Attaching a sample Image below from the application:
 
 ## **Discussion**
 
-We have done 4 models which is been explained above in the methods section. The first one is the CNN encoder like inception V3 for image encoding and the RNN decoder for the text decoding, we used a mid level batch and epoch size given the CPU/GPU constraint, was able to increase the accuracy and decrease both training and validation loss. Further we tweaker the hyper-parameters and have done the second modeling using the same CNN/RNN, here we tuned the learning rate, utilized the adam optimizer, and also increased the vocabulary size to frame for descriptive captions, it had a lesser loss from 2.61 to 2.31, and the captions were able to frame better sentences. 
+We have done 4 models which has been explained above in the methods section. The first one is the CNN encoder like inception V3 for image encoding and the RNN decoder for the text decoding, we used a mid level batch and epoch size given the CPU/GPU constraint, was able to increase the accuracy and decrease both training and validation loss. Further we tweaked the hyper-parameters and have done the second modeling using the same CNN/RNN, here we tuned the learning rate, utilized the adam optimizer, and also increased the vocabulary size to frame for descriptive captions, it had a lesser loss from 2.61 to 2.31, and the captions were able to frame better sentences. 
 
 
 Here the model 1 had a training time of ~14 hours, with additional parameter optimization second model took around 25 hours in the local system but it gave lesser training and validation loss.
@@ -147,16 +146,16 @@ Explanation: Here our model works best with objects we trained it on, for exampl
 
 #### **Addressing the Stakeholder Needs**
 
-Our main primary stakeholders are the people with Visual Impairments, the web-application we created highly aids them understanding the images better, given they are traveling to a new place or want to know what is happening around without someone aiding them, this application works better for them as it even has text to audio extension and descriptive caption which captures lot of things happening right there. 
+Our main primary stakeholders are the people with Visual Impairments, the web-application we created aids them in understanding the images better, given they are traveling to a new place or want to know what is happening around without someone aiding them, this application works better for them as it even has text to audio extension and descriptive caption which captures lot of things happening right there. 
 
-People who gets into this malign level of diabetes Retinopathy, they lose more than half a sight and cannot distinguish objects properly, with this application, they don't need an additional person to visualize something.
+People who reach a malignant stage of diabetic retinopathy lose more than half their sight and cannot distinguish objects properly. With this application, they don't need an additional person to visualize something.
 
 Our second stakeholders are the social media users, we have tested it with random images from the search engines, its able to caption those images, people can utilize these to explain an image they are posting in a generic way, for example, flower garden in middle of a city park, its one of the caption our web application generated when we tested out. It makes browsing engaging, with more classified training we could even utilize it to identify plant species to very specific bird names.
 
-Our third stakeholders are the teachers and educators, this could be next LCMS (Learning Content Management System) in schools, instead of pages of notes and efforts, they could support early literacy with advanced vocabulary from the captions generated, a child would be intrigued to see different grammatical way of explaining a picture, this would increase the language development at the earlier age. 
+Our third stakeholders are the teachers and educators, this could be next LCMS(Learning Content Management System) in schools, instead of pages of notes and efforts, they could support early literacy with advanced vocabulary from the captions generated, a child would be intrigued to see different grammatical way of explaining a picture, this would increase the language development at the earlier age. 
 
+For further improvement, we even trained our models with an extensive vocabulary from five different captions.
 
-For further standard grammar and vocabulary we even trained our models with extensive vocabulary of 5 different captions.
 
 ## **Limitations**
 
@@ -177,9 +176,9 @@ Given a GPU which reduces training time, we could have experimented integrating 
 
 
 ## **Future Works**
-We are still trying to work out this GPU as we raised ticket with microsoft, they have suggested few ways, we are trying those out to get the GPU detected as a physical device.
+We are still trying to work on the GPU issue, and we also raised a ticket with Microsoft regarding this. They have suggested a few ways  and we are working on them to get the GPU detected as a physical device.
 
-Our other future scope is to include more advanced vocabulary training as well as to incorporate atleast 300 object categories, we want to increase the scope of the stakeholders, and for our current users we want to add in more languages such as Italian, Spanish, Dutch. Just a translation of English to the desired language through APIs weren't perfect, so caption training with regional language annotation file is the next short term goal.
+Our other future scope is to include more advanced vocabulary training as well as to incorporate at least 300 object categories. We want to increase the scope for stakeholders, and for our current users, we want to add more languages such as Italian, Spanish, and Dutch. Just translating English to the desired language through APIs wasn't perfect, so caption training with regional language annotation files is the next short-term goal.
 
-For the long-term, given if the resources are provided, we wanted to publish this as an application which has different screens with different models trained to address the stakeholder, for an instance a page for botanists which has a BLIP or Vision Model(as they are high performing ones) with wide diverse dataset of plant species which could describe them what species are present in an image or what it is similar to, it would be highly helpful for the students in the graduate schools to have an interactive learning.
+For the long term, given the resources, we wanted to publish this as an application with different screens and different models trained to address stakeholders. For instance, a page for botanists which has a BLIP or Vision Model (as they are high performing ones) with a wide diverse dataset of plant species. This could describe what species are present in an image or what it is similar to. It would be highly helpful for students in graduate schools to have an interactive learning experience.
 
