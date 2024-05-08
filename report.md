@@ -117,11 +117,11 @@ ImageNet is a very widely known dataset in computer vision research, acknowledge
 - **Structure:** Organized based on the WordNet hierarchy, aiding model understanding of relationships between objects.
 - **Annotations:** Image-level annotations indicating object presence (less detailed than COCO's bounding boxes).
 
-## Methods
+## **Methods**
 
-### Preprocessing
+### **Preprocessing**
 
-#### Text Preprocessing:
+#### **Text Preprocessing:**
 
 The captions extracted from the COCO dataset underwent several preprocessing steps to prepare them for training. These steps ensure consistency, remove unnecessary characters, and tokenize the text appropriately. Here's an outline of the preprocessing techniques applied:
 
@@ -139,7 +139,7 @@ The captions extracted from the COCO dataset underwent several preprocessing ste
      - Vocabulary Size: The vocabulary size was set to 15,000 to balance model complexity and coverage of words in the dataset.
      - Output Sequence Length: Sequences were padded or truncated to have a length of 40 tokens, ensuring uniformity in input data format for the model.
 
-#### Image Preprocessing:
+#### **Image Preprocessing:**
 
 1. **Decoding and Resizing:** Decode images into JPEG format and resize them to 299 x 299 pixels.
 2. **Preprocessing Function:** Utilize a function to preprocess images by decoding them into JPEG format, resizing them, and applying InceptionV3 preprocessing.
@@ -148,9 +148,9 @@ The captions extracted from the COCO dataset underwent several preprocessing ste
 5. **Shuffle and Batch:** Shuffle the dataset and batch it for training.
 6. **Image Augmentation:** Define a sequential model for image augmentation, including random horizontal flipping, rotation, and contrast adjustment.
 
-### Modeling
+### **Modeling**
 
-#### Basic CNN-RNN model
+#### **Basic CNN-RNN model**
 
 Our modeling architecture consists of two main components: an image encoder and a text decoder.
 
@@ -199,7 +199,7 @@ Our modeling architecture consists of two main components: an image encoder and 
     - Displays the selected image for visual inspection of caption quality.
     - Generates captions token by token using a softmax layer at the output.
 
-#### InceptionV3
+#### **InceptionV3**
 
 **Pre-trained on ImageNet:**
 InceptionV3 is pre-trained on the ImageNet dataset, which contains millions of labeled images across thousands of categories. Pre-training on ImageNet allows the model to learn general features from images, such as edges, textures, and object shapes.
@@ -220,7 +220,7 @@ InceptionV3 is a convolutional neural network (CNN) architecture developed by Go
 
 6. **Output Layer:** The final layers of the model are responsible for producing the model's output.
 
-#### CNN-RNN with Hyper-parameter tuning model
+#### **CNN-RNN with Hyper-parameter tuning model**
 
 Modifications were implemented in the CNN encoder, including adjustments to the maximum sequence length and the addition of a learning rate parameter (learning_rate=0.0001) in the Adam optimizer.
 
@@ -243,7 +243,7 @@ Modifications were implemented in the CNN encoder, including adjustments to the 
 Additional Changes:
 - **Learning Rate in Adam Optimizer:** A learning rate of 0.0001 has been added to the Adam optimizer, which controls the step size at each iteration while moving toward a minimum of the loss function during training.
 
-#### VisionEncoderDecoderModel, GPT2TokenizerFast, ViTImageProcessor
+#### **VisionEncoderDecoderModel, GPT2TokenizerFast, ViTImageProcessor**
 
 The Third Model that we used here is a vision transformer-based architecture combined with GPT-2 for image captioning. It takes an image as input, processes it through a vision encoder, and generates a descriptive caption using a decoder based on GPT-2 architecture.
 
@@ -259,7 +259,7 @@ The three pre-trained models are:
 
 ViTs are deep learning models that process sequential input data and reduce training times. Using the pre-trained models VisionEncoderDecoderModel, GPT2TokenizerFast, and ViTImageProcessor, provided an easy way of building without building from scratch. They also have the ability to outperform supervised pre-training and are suitable for image captioning.
 
-### BLIP
+### **BLIP**
 
 The Fourth Model that we used here is BLIP: Bootstrapping Language-Image Pre-training for image captioning, from model and processor initialization to caption generation for input images.
 
