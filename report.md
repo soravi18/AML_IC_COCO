@@ -117,6 +117,200 @@ ImageNet is a very widely known dataset in computer vision research, acknowledge
 - **Structure:** Organized based on the WordNet hierarchy, aiding model understanding of relationships between objects.
 - **Annotations:** Image-level annotations indicating object presence (less detailed than COCO's bounding boxes).
 
+## Methods
+
+### Preprocessing
+
+#### Text Preprocessing:
+
+The captions extracted from the COCO dataset underwent several preprocessing steps to prepare them for training. These steps ensure consistency, remove unnecessary characters, and tokenize the text appropriately. Here's an outline of the preprocessing techniques applied:
+
+1. **Lowercasing:** All text was converted to lowercase to ensure consistency in the data.
+
+2. **Removing Non-Alphanumeric Characters:** Non-alphanumeric characters and non-whitespace characters were removed from the captions. These characters typically do not significantly affect the meaning of the text but may introduce noise.
+
+3. **Whitespace Normalization:** Multiple consecutive whitespace characters were replaced with a single space. This normalization step ensures uniformity in text formatting.
+
+4. **Adding Special Tokens:** Special tokens, such as `[start]` at the beginning and `[end]` at the end of each caption, were added to indicate the start and end of sequences. These tokens help the model learn the sequence generation task effectively.
+
+5. **Tokenization:**
+   - For tokenization, a TextVectorization layer was initialized to tokenize the captions. The following configurations were applied to the TextVectorization layer:
+     - Maximum Sequence Length: Captions were limited to a maximum length of 40 tokens to manage computational complexity.
+     - Vocabulary Size: The vocabulary size was set to 15,000 to balance model complexity and coverage of words in the dataset.
+     - Output Sequence Length: Sequences were padded or truncated to have a length of 40 tokens, ensuring uniformity in input data format for the model.
+
+#### Image Preprocessing:
+
+1. **Decoding and Resizing:** Decode images into JPEG format and resize them to 299 x 299 pixels.
+2. **Preprocessing Function:** Utilize a function to preprocess images by decoding them into JPEG format, resizing them, and applying InceptionV3 preprocessing.
+3. **Create TensorFlow Dataset:** Pair each image file path with its corresponding caption using `tf.data.Dataset.from_tensor_slices`.
+4. **Map Preprocessing Function:** Apply the preprocessing function to each pair in parallel using `map`.
+5. **Shuffle and Batch:** Shuffle the dataset and batch it for training.
+6. **Image Augmentation:** Define a sequential model for image augmentation, including random horizontal flipping, rotation, and contrast adjustment.
+
+### Modeling
+
+#### Basic CNN-RNN model
+
+Our modeling architecture consists of two main components: an image encoder and a text decoder.
+
+1. **CNN Encoder Function:**
+   - Defines a function creating an InceptionV3-based CNN encoder model.
+   - Loads the InceptionV3 model pre-trained on ImageNet without the top layer.
+   - Reshapes output to a 2D shape, creating a new model for image feature extraction.
+
+2. **Custom Transformer Encoder Layer:**
+   - Defines a layer with multi-head self-attention and feed-forward neural network.
+   - Includes layer normalization after both mechanisms.
+   - Forward pass normalizes input, passes through feed-forward network and self-attention, and normalizes output.
+
+3. **Custom Embedding Layer:**
+   - Defines a layer for computing embeddings in a Transformer model.
+   - Comprises token and positional embedding layers, allowing learning of token-based and position-based representations.
+
+4. **Custom Transformer Decoder Layer:**
+   - Defines a layer with multi-head self-attention, layer normalization, feed-forward networks, and dropout.
+   - Includes method for generating causal attention mask.
+   - Forward pass involves self-attention mechanisms, normalization, feed-forward networks, and output generation.
+
+5. **Image Captioning Keras Model:**
+   - Integrates CNN model for image feature extraction, Transformer encoder for processing, and Transformer decoder for caption generation.
+   - Includes methods for loss computation, custom training, testing, and accessing metrics.
+
+6. **Image Captioning Model Instance Setup:**
+   - Creates an instance of the ImageCaptioningModel class.
+   - Sets up CNN model, Transformer encoder, Transformer decoder, and optional image augmentation layer.
+
+7. **Model Training Setup:**
+   - Compiles the image captioning model with Adam optimizer and sparse categorical cross-entropy loss.
+   - Includes early stopping callback based on validation loss.
+
+8. **Model Training Process:**
+   - Trains the image captioning model using provided dataset for specified epochs.
+   - Validates model performance with a validation dataset.
+   - Applies early stopping to prevent overfitting.
+
+9. **Utility Functions:**
+   - load_image_from_path: Loads and preprocesses an image from a file path.
+   - generate_caption: Generates a caption for an image using the trained model, optionally adding noise.
+
+10. **Caption Generation and Inspection:**
+    - Selects a random image from the dataset, generates a caption, and prints it.
+    - Displays the selected image for visual inspection of caption quality.
+    - Generates captions token by token using a softmax layer at the output.
+
+#### InceptionV3
+
+**Pre-trained on ImageNet:**
+InceptionV3 is pre-trained on the ImageNet dataset, which contains millions of labeled images across thousands of categories. Pre-training on ImageNet allows the model to learn general features from images, such as edges, textures, and object shapes.
+
+**Architecture:**
+InceptionV3 is a convolutional neural network (CNN) architecture developed by Google. It is a deep learning model consisting of multiple layers of convolutional and pooling operations.
+
+**Layers:**
+1. **Input Layer:** The model starts with an input layer (InputLayer) that takes input images with a shape of (None, 299, 299, 3).
+
+2. **Convolutional Layers:** Following the input layer, the model contains several convolutional layers (Conv2D).
+
+3. **Activation Layers:** After each convolutional layer, an activation layer (Activation) applies a non-linear activation function to introduce non-linearity into the model.
+
+4. **Pooling Layers:** Pooling layers (MaxPooling2D and AveragePooling2D) are interspersed with convolutional layers to reduce spatial dimensions and control overfitting.
+
+5. **Concatenation Layers:** At certain points in the model, the feature maps from multiple branches are concatenated (Concatenate) to combine different levels of abstraction.
+
+6. **Output Layer:** The final layers of the model are responsible for producing the model's output.
+
+#### CNN-RNN with Hyper-parameter tuning model
+
+Modifications were implemented in the CNN encoder, including adjustments to the maximum sequence length and the addition of a learning rate parameter (learning_rate=0.0001) in the Adam optimizer.
+
+1. **CNN Encoder Modification:** The code for the Convolutional Neural Network (CNN) encoder has been altered.
+
+2. **Maximum Length Adjustment:** The maximum length parameter (MAX_LENGTH) has been updated to 40, indicating that sequences longer than 40 tokens will be truncated or padded to fit this length.
+
+3. **Vocabulary Size Specification:** The vocabulary size (VOCABULARY_SIZE) has been set to 15,000, determining the number of unique words considered in the model's training.
+
+4. **Batch Size Definition:** The batch size (BATCH_SIZE) for training has been specified as 64, indicating the number of samples processed in one iteration.
+
+5. **Buffer Size for Shuffling:** The buffer size (BUFFER_SIZE) for shuffling the dataset has been set to 1000, determining the number of elements from which the next element is randomly chosen.
+
+6. **Embedding Dimension Assignment:** The embedding dimension (EMBEDDING_DIM) has been assigned a value of 1024, specifying the size of the dense embedding vector for each token.
+
+7. **Units in Neural Network Layers:** The number of units (UNITS) in the neural network layers has been set to 1024, determining the dimensionality of the output space.
+
+8. **Training Epochs:** The number of training epochs (EPOCHS) has been defined as 10, indicating the number of times the entire dataset will be passed forward and backward through the neural network.
+
+Additional Changes:
+- **Learning Rate in Adam Optimizer:** A learning rate of 0.0001 has been added to the Adam optimizer, which controls the step size at each iteration while moving toward a minimum of the loss function during training.
+
+#### VisionEncoderDecoderModel, GPT2TokenizerFast, ViTImageProcessor
+
+The Third Model that we used here is a vision transformer-based architecture combined with GPT-2 for image captioning. It takes an image as input, processes it through a vision encoder, and generates a descriptive caption using a decoder based on GPT-2 architecture.
+
+Vision transformers are a type of transformers that perform visual-related tasks that include images. They are a transformer that also use attention mechanisms to find the relationships between input images.
+
+The three pre-trained models are:
+
+- VisionEncoderDecoderModel: This helps in carrying out an image-to-text generation with any pre-trained vision model using a Transformers (as the encoder) such as ViT (which we used here) or BEiT kind of models which uses self-supervised pre-training of Vision Transformers (ViTs) to outperform supervised pre-training alongside any pre-trained language model as the decoder such as GPT2 (which we are also using here). So, in this approach, we employ VisionEncoderDecoder as an application for image captioning using it to encode the image and later use a language model to generate the captions.
+
+- GPT2TokenizerFast: This creates a GPT-2 tokenizer using the Hugging Face tokenizers library. We load the tokenizers library to the transformers. The tokenizer has been trained already to handle all the feats we require for captioning.
+
+- ViTImageProcessor: Lastly is the ViTImageProcessor. It helps to construct a ViT image processor.
+
+ViTs are deep learning models that process sequential input data and reduce training times. Using the pre-trained models VisionEncoderDecoderModel, GPT2TokenizerFast, and ViTImageProcessor, provided an easy way of building without building from scratch. They also have the ability to outperform supervised pre-training and are suitable for image captioning.
+
+### BLIP
+
+The Fourth Model that we used here is BLIP: Bootstrapping Language-Image Pre-training for image captioning, from model and processor initialization to caption generation for input images.
+
+BLIP, a new VLP framework which transfers flexibly to both vision-language understanding and generation tasks. BLIP effectively utilizes the noisy web data by bootstrapping the captions, where a captioner generates synthetic captions and a filter removes the noisy ones. BLIP also demonstrates strong generalization ability when directly transferred to video language tasks in a zero-shot manner.
+
+BLIP pre-trains a multimodal mixture of encoder-decoder model using a dataset bootstrapped from large-scale noisy image-text pairs by injecting diverse synthetic captions and removing noisy captions.
+
+This is multimodal mixture of encoder-decoder (MED), a multi-task model which can operate in one of the three functionalities:
+
+1. **Unimodal encoder**, which separately encodes image and text. The text encoder is the same as BERT (Devlin et al.,2019), where a `[CLS]` token is appended to the beginning of the text input to summarize the sentence.
+
+2. **Image-grounded text encoder**, which injects visual information by inserting one additional cross-attention (CA) layer between the self-attention (SA) layer and the feed forward network (FFN) for each transformer block of the text encoder. A task-specific `[Encode]` token is appended to the text, and the output embedding of `[Encode]` is used as the multimodal representation of the image-text pair.
+
+3. **Image-grounded text decoder**, which replaces the bidirectional self-attention layers in the image-grounded text encoder with causal self-attention layers. A `[Decode]` token is used to signal the beginning of a sequence, and an end-of-sequence token is used to signal its end.
+
+**Fine-tuning Parameters:**
+- Definition of parameters such as batch size, learning rate, and number of training epochs.
+
+**Model Optimization and Fine-Tuning:**
+
+1. **Optimizer Initialization:**
+   - Initialization of an AdamW optimizer with parameters from a pre-trained BLIP model.
+
+2. **Fine-Tuning Loop Setup:**
+   - Determination of computation device (GPU or CPU).
+   - Transfer of the pre-trained BLIP model to the chosen device.
+   - Setting the model to training mode.
+
+3. **Training Loop for Fine-Tuning:**
+   - **Epoch Iteration:**
+     - Iteration over each epoch, tracking epoch number and accumulating epoch loss.
+   - **Batch Processing:**
+     - Processing of batches of training data within each epoch.
+     - Extraction of image paths and corresponding captions.
+     - Generation of captions for each image.
+     - Tokenization of captions and images using the BLIP processor.
+     - Forward pass through the model.
+   - **Loss Computation and Backpropagation:**
+     - Computation of loss between predicted and ground-truth captions.
+     - Accumulation and averaging of loss over batches.
+     - Backpropagation to update model parameters using the optimizer.
+   - **Epoch Completion:**
+     - Computation and printing of average loss for the epoch.
+
+**Image Caption Generation:**
+- Loading of BLIP processor and pre-trained model trained on the COCO dataset.
+- `generate_caption` function: Takes an image, processor, and model, processes the image, generates a caption using the model, and returns the caption.
+- `generate_captions` function: Wrapper for `generate_caption`, taking an image as input and returning the generated caption using predefined processor and model.
+- Base path for COCO dataset and model loading provided.
+
+
 ## **Results**
 
 The running web application is built on BLIP: Bootstrapping Language Image Pre-training for image captioning, it gave high accuracy and lesser loss compared to the other three models, moreover it has a filter to remove noise from website data making it a better fit for the application.
@@ -133,7 +327,7 @@ We have done 4 models which has been explained above in the methods section. The
 Here the model 1 had a training time of ~14 hours, with additional parameter optimization second model took around 25 hours in the local system but it gave lesser training and validation loss.
 
 
-Further we have utilized a pre-trained model Vision Encoder Decoder model, here we used the Vision architecture to find the relationship between the images and GPT2 decoder to write the caption. It has  reduced the training time to 8 hours and we were able to increase the epochs size, model is already trained on image net data, we fine tuned it to fit the coco-data file and annotation set. The loss drastically reduced to 0.378. We did a fourth model further using BLIP, which further reduced the loss to 
+Further we have utilized a pre-trained model Vision Encoder Decoder model, here we used the Vision architecture to find the relationship between the images and GPT2 decoder to write the caption. It has  reduced the training time to 8 hours and we were able to increase the epochs size, model is already trained on image net data, we fine tuned it to fit the coco-data file and annotation set. The loss drastically reduced to 0.378. We did a fourth model further using BLIP, which further reduced the loss to 0.0062.
 
 
 
