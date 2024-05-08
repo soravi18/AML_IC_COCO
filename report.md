@@ -133,13 +133,15 @@ We have done 4 models which has been explained above in the methods section. The
 Here the model 1 had a training time of ~14 hours, with additional parameter optimization second model took around 25 hours in the local system but it gave lesser training and validation loss.
 
 
-Further we have utilized a pre-trained model Vision Encoder Decoder model, here we used the Vision architecture to find the relationship between the images and GPT2 decoder to write the caption. It has  reduced the training time to 8 hours and we were able to increase the epochs size, model is already trained on image net data, we fine tuned it to fit the coco-data file and annotation set. The loss drastically reduced to 0.378.
+Further we have utilized a pre-trained model Vision Encoder Decoder model, here we used the Vision architecture to find the relationship between the images and GPT2 decoder to write the caption. It has  reduced the training time to 8 hours and we were able to increase the epochs size, model is already trained on image net data, we fine tuned it to fit the coco-data file and annotation set. The loss drastically reduced to 0.378. We did a fourth model further using BLIP, which further reduced the loss to 
 
-We are 70% satisfied with where we are in the results at the moment, we are still fine tuning things to make it work better as we want to capture every instance an image can display. We are stuck with the computational resources which has been explained detailed in the Limitation section below. There are 80 sub categories of the vast data set but its not very much enough to cover everything in the world.
+
+
+We are quite satisfied with where we are in the results at the moment, we are still fine tuning things to make it work better as we want to capture every instance an image can display. We are stuck with the computational resources which has been explained detailed in the Limitation section below. There are 80 sub categories of the vast data set but its not very much enough to cover everything in the world.
 
 The task is GPU bound, but everything we have done so far is using a high computational CPU with 48 cores, so there was a time constraint and idling out issue which restricted in finding more bbox(Boundary Boxes for Object Segmentation) which has been displayed in the image below.
 
-insert image
+![Alt Text](Images/cpu_idling.jpg)
 
 Explanation: Here our model works best with objects we trained it on, for example few animals, fruits, food categories..etc, here the below image has a caption quoting it as a clock tower instead of captioning it as a Eiffel tower, we trained a model how to identify an object as a clock/clock tower as its one of the object instance in coco2017 dataset. We wanted to use more object and stuff categories, but even here due to disk limitation and CPU idling out we had to train on less than half of the data.
 
